@@ -6,5 +6,10 @@ Language Model and put the calculated result into the database.
 *   Extracted prepared data using JQuery, PHP, and Ajax to realize the
 auto-completion on the web end.
 
-[Sample 1]()
-[Sample 2]()
+##### Sample I
+
+![Sample 1](https://github.com/chendddong/NGram/blob/master/TH%20I.png?raw=true)
+
+##### Sample II
+
+![Sample 2](https://github.com/chendddong/NGram/blob/master/TH%20II.png?raw=true)

@@ -6,6 +6,10 @@ Language Model(a probability distribution over entire sentences or texts.) and p
 *   Extracted prepared data using JQuery, PHP, and Ajax to realize the
 auto-completion on the web end.
 
+#### Work Flow
+
+![Sample 1](https://github.com/chendddong/NGram/blob/master/workFlow.png?raw=true)
+
 ##### Sample I
 
 ![Sample 1](https://github.com/chendddong/NGram/blob/master/TH%20I.png?raw=true)

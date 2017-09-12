@@ -1,6 +1,6 @@
 ### Google Auto Completion (Typeahead)
 
-*   Collected data set from wiki to construct N-Gram library.
+*   Collected data set from wiki to construct N-Gram library(An n-gram is a contiguous sequence of n items form a given sequence of text or speech).
 *   Implemented MapReduce Algorithm, calculated words possibility to build
 Language Model and put the calculated result into the database.
 *   Extracted prepared data using JQuery, PHP, and Ajax to realize the

@@ -19,6 +19,7 @@ public class Driver {
 		String inputDir = args[0];
 		String nGramLib = args[1];
 		String numberOfNGram = args[2];
+
 		String threshold = args[3];  //the word with frequency under threshold will be discarded
 		String numberOfFollowingWords = args[4];
 

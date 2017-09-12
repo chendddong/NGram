@@ -2,7 +2,7 @@
 
 *   Collected data set from wiki to construct N-Gram library(An n-gram is a contiguous sequence of n items form a given sequence of text or speech).
 *   Implemented MapReduce Algorithm, calculated words possibility to build
-Language Model and put the calculated result into the database.
+Language Model(a probability distribution over entire sentences or texts.) and put the calculated result into the database.
 *   Extracted prepared data using JQuery, PHP, and Ajax to realize the
 auto-completion on the web end.
 

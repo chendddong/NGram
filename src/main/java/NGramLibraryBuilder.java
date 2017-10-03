@@ -25,29 +25,32 @@ public class NGramLibraryBuilder {
 			noGram = conf.getInt("noGram", 5);
 		}
 
-		// map method
 		@Override
 		public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 			
 			String line = value.toString();
-			
+			/* The java string trim() method eliminates leading and trailing spaces */
 			line = line.trim().toLowerCase();
+			/* Replace non-alphabetical chars with space */
 			line = line.replaceAll("[^a-z]", " ");
 			
-			String[] words = line.split("\\s+"); //split by ' ', '\t'...ect
-			
-			if(words.length<2) {
+			String[] words = line.split("\\s+"); /* split by ' ', '\t'...ect */
+
+            /* Edge */
+			if(words.length < 2) {
 				return;
 			}
 			
-			//I love big data
+			/* What the preprocessed data looked like: 'I love big data' */
+
 			StringBuilder sb;
-			for(int i = 0; i < words.length-1; i++) {
+
+			for(int i = 0; i < words.length - 1; i++) {
 				sb = new StringBuilder();
 				sb.append(words[i]);
-				for(int j=1; i+j<words.length && j<noGram; j++) {
+				for(int j = 1; i + j < words.length && j < noGram; j++) {
 					sb.append(" ");
-					sb.append(words[i+j]);
+					sb.append(words[i + j]);
 					context.write(new Text(sb.toString().trim()), new IntWritable(1));
 				}
 			}
@@ -55,7 +58,6 @@ public class NGramLibraryBuilder {
 	}
 
 	public static class NGramReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
-		// reduce method
 		@Override
 		public void reduce(Text key, Iterable<IntWritable> values, Context context)
 				throws IOException, InterruptedException {

@@ -34,31 +34,40 @@ public class LanguageModel {
 			if((value == null) || (value.toString().trim()).length() == 0) {
 				return;
 			}
-			//this is cool\t20
+			/* The data should be like this before the processing */
+
+			// line = this is cool\t20
 			String line = value.toString().trim();
-			
+
+			// wordsPlusCount = [this is cool, 20]
 			String[] wordsPlusCount = line.split("\t");
-			if(wordsPlusCount.length < 2) {
+
+			if(wordsPlusCount.length < 2) { /* Edge case */
 				return;
 			}
-			
+
+			// words : [this, is, cool]
+            // count: 20
 			String[] words = wordsPlusCount[0].split("\\s+");
 			int count = Integer.valueOf(wordsPlusCount[1]);
 			
-			if(count < threashold) {
+			if(count < threashold) { /* Also an edge */
 				return;
 			}
-			
-			//this is --> cool = 20
+
 			StringBuilder sb = new StringBuilder();
-			for(int i = 0; i < words.length-1; i++) {
+			for(int i = 0; i < words.length - 1; i++) {
 				sb.append(words[i]).append(" ");
+				// this, is
 			}
-			String outputKey = sb.toString().trim();
-			String outputValue = words[words.length - 1];
+
+			/* Like a key value mapping relation */
+			String outputKey = sb.toString().trim(); /* This is the key : this, is */
+			String outputValue = words[words.length - 1]; /* This is the value : cool */
 			
-			if(!((outputKey == null) || (outputKey.length() <1))) {
+			if(!((outputKey == null) || (outputKey.length() < 1))) { /* make sure there is a output key */
 				context.write(new Text(outputKey), new Text(outputValue + "=" + count));
+                // this is --> cool = 20
 			}
 		}
 	}
@@ -66,7 +75,7 @@ public class LanguageModel {
 	public static class Reduce extends Reducer<Text, Text, DBOutputWritable, NullWritable> {
 
 		int n;
-		// get the n parameter from the configuration
+		/* get the n parameter from the configuration */
 		@Override
 		public void setup(Context context) {
 			Configuration conf = context.getConfiguration();
@@ -76,28 +85,33 @@ public class LanguageModel {
 		@Override
 		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 			
-			//this is, <girl = 50, boy = 60>
+			// data -- -- -- -- this is, [girl = 50, boy = 60]
+
+            // key : this is
+            // value : [girl = 50, boy = 60]
+
+            /* Temp cache */
 			TreeMap<Integer, List<String>> tm = new TreeMap<Integer, List<String>>(Collections.reverseOrder());
-			for(Text val: values) {
-				String curValue = val.toString().trim();
-				String word = curValue.split("=")[0].trim();
-				int count = Integer.parseInt(curValue.split("=")[1].trim());
-				if(tm.containsKey(count)) {
+			for (Text val: values) {
+				String curValue = val.toString().trim(); // girl = 50
+				String word = curValue.split("=")[0].trim(); // girl
+				int count = Integer.parseInt(curValue.split("=")[1].trim()); // 50
+				if (tm.containsKey(count)) {
 					tm.get(count).add(word);
-				}
-				else {
+				} else {
 					List<String> list = new ArrayList<String>();
 					list.add(word);
 					tm.put(count, list);
 				}
 			}
-			//<50, <girl, bird>> <60, <boy...>>
+			// <60, <boy...>> <50, <girl, bird>>
+            // Use the iterator to write the data to the database
 			Iterator<Integer> iter = tm.keySet().iterator();
-			for(int j=0; iter.hasNext() && j<n;) {
+			for (int j = 0; iter.hasNext() && j < n;) {
 				int keyCount = iter.next();
 				List<String> words = tm.get(keyCount);
-				for(String curWord: words) {
-					context.write(new DBOutputWritable(key.toString(), curWord, keyCount),NullWritable.get());
+				for (String curWord: words) {
+					context.write(new DBOutputWritable(key.toString(), curWord, keyCount), NullWritable.get());
 					j++;
 				}
 			}

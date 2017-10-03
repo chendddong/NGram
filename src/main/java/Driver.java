@@ -47,7 +47,7 @@ public class Driver {
 		TextOutputFormat.setOutputPath(job1, new Path(nGramLib));
 		job1.waitForCompletion(true);
 		
-		//how to connect two jobs?
+		// how to connect two jobs?
 		// last output is second input
 		
 		//2nd job
@@ -55,7 +55,7 @@ public class Driver {
 		conf2.set("threshold", threshold);
 		conf2.set("n", numberOfFollowingWords);
 
-		//Use dbConfiguration to configure all the jdbcDriver, db user, db password, database
+		// Use dbConfiguration to configure all the jdbcDriver, db user, db password, database
 		DBConfiguration.configureDB(conf2, 
 				"com.mysql.jdbc.Driver",
 				"jdbc:mysql://192.168.0.6:8889/test",
@@ -66,7 +66,7 @@ public class Driver {
 		job2.setJobName("Model");
 		job2.setJarByClass(Driver.class);
 
-		//How to add external dependency to current project?
+		// How to add external dependency to current project?
 		/*
 		  1. upload dependency to hdfs
 		  2. use this "addArchiveToClassPath" method to define the dependency path on hdfs
